@@ -71,9 +71,17 @@ BEGIN {
         break
         case ":.w":
             if ($5) {
-                send_msg($3, search_wiki(collect(5)))
+                if ($5 ~ /^..$/) {
+                    if ($6) {
+                        send_msg($3, search_wiki(collect(6), $5))
+                    } else {
+                        send_msg($3, "wikipedia command: .w <lang_code> <query>")
+                    }
+                } else {
+                    send_msg($3, search_wiki(collect(5), "en"))
+                }
             } else {
-                send_msg($3, "wikipedia command: .w <query>")
+                send_msg($3, "wikipedia command: .w <lang_code> <query>")
             }
         break
         default:

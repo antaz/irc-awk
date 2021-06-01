@@ -1,10 +1,10 @@
 # Returns the extract of a wikipedia article
-function search_wiki(query) {
+function search_wiki(query, lang_code) {
     gsub(/ /, "%20", query)
-    search_command = "curl -s 'https://en.wikipedia.org/w/rest.php/v1/search/page?q=" query "&limit=5' | jq -r .pages[0].key"
+    search_command = "curl -s 'https://" lang_code ".wikipedia.org/w/rest.php/v1/search/page?q=" query "&limit=5' | jq -r .pages[0].key"
     search = exec_cmd(search_command)
     if (search_command) {
-        get_command = "curl -s 'https://en.wikipedia.org/api/rest_v1/page/summary/" search "' | jq -r .extract"
+        get_command = "curl -s 'https://" lang_code ".wikipedia.org/api/rest_v1/page/summary/" search "' | jq -r .extract"
         extract = exec_cmd(get_command)
         if (extract ~ /may refer to:$/) {
             return "Ambigious query"
