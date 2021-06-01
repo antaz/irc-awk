@@ -49,6 +49,16 @@ BEGIN {
                             send_msg($3, "Specify username: .l rating <username> <category>")
                         }
                     break
+                    case "alias":
+                        if ($6) {
+                            if ($7) {
+                                send_msg($3, add_lichess_alias($6, $7))
+                            } else {
+                                send_msg($3, "add alias: .l alias <nick> <alias>")
+                            }
+                        } else {
+                                send_msg($3, "add alias: .l alias <nick> <alias>")
+                        }
                     default:
                     break
                 }
