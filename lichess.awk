@@ -1,13 +1,14 @@
 # returns lichess rating of `username` in 'category'
 function get_lichess_rating(username, category) {
     if (category ~ /^(rapid)|(blitz)|(bullet)|(ultrabullet)|(puzzle)$/) {
-        rating = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -r .perfs." category ".rating")
-        games = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -r .perfs." category ".games")
-        rd = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -r .perfs." category ".rd")
-        prog = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -r .perfs." category ".prog")
 
-        if (rating) {
-            output = sprintf("%s %s (%s) [N = %s, σ = %s, Δ = %s]", username, category, rating, games, rd, prog)
+        output = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -rc '[.perfs." category ".rating, .perfs." category ".games, .perfs." category ".rd, .perfs." category ".prog]'")
+
+        if (output) {
+            gsub(/[\[\]]/, "", output)
+            split(output, a, ",")
+
+            output = sprintf("%s %s (%s) [N = %s, σ = %s, Δ = %s]", username, category, a[1], a[2], a[3], a[4])
             return output
         } else {
             return "User not found!"
