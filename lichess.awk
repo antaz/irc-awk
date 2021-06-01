@@ -1,18 +1,20 @@
 # returns lichess rating of `username` in 'category'
 function get_lichess_rating(username, category) {
-    if (category != "") {
+    if (category ~ /^(rapid)|(blitz)|(bullet)|(ultrabullet)|(puzzle)$/) {
         rating = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -r .perfs." category ".rating")
         games = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -r .perfs." category ".games")
         rd = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -r .perfs." category ".rd")
         prog = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -r .perfs." category ".prog")
 
-        output = sprintf("%s %s (%s) [N = %s, σ = %s, Δ = %s]", username, category, rating, games, rd, prog)
-        return output
+        if (rating) {
+            output = sprintf("%s %s (%s) [N = %s, σ = %s, Δ = %s]", username, category, rating, games, rd, prog)
+            return output
+        } else {
+            return "User not found!"
+        }
     } else {
-        return "Please specify category. eg: .l rating <user> rapid"
+        return "Specify a valid category: (rapid, blitz, bullet, ultrabullet, puzzle)"
     }
-    # TODO return a summary if category is not supplied
-    return "Something went wrong! :("
 }
 
 # returns tv url of 'username'
