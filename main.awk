@@ -88,6 +88,8 @@ BEGIN {
                 send_msg($3, "wikipedia command: .w <lang_code> <query>")
             }
         break
+        case ".h":
+            send_msg($3, "supported commands: .l (lichess), .w (wikipedia), .ud (urban dictionary).")
         default:
             send_msg($3, "invalid command!")
         break
