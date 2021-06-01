@@ -101,11 +101,10 @@ function collect(n) {
 
 # Executing a command and returing its getline output
 function exec_cmd(command) {
-    command |& getline output
+    result = ""
+    command |& getline result
     close(command)
-    if (output) {
-        return output
-    }
+    return result
 }
 
 # sends a `message` to a specific `target` (channel or user)
