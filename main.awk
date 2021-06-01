@@ -35,7 +35,7 @@ BEGIN {
                         if ($6) {
                             send_msg($3, get_lichess_tv($6))
                         } else {
-                            send_msg($3, "Specify username: .l tv <username>")
+                            send_msg($3, "specify username: .l tv <username>")
                         }
                     break
                     case "rating":
@@ -43,10 +43,10 @@ BEGIN {
                             if ($7) {
                                 send_msg($3, get_lichess_rating($6, $7))
                             } else {
-                                send_msg($3, "Specify category: .l rating <username> <category>")
+                                send_msg($3, "specify category: .l rating <username> <category>")
                             }
                         } else {
-                            send_msg($3, "Specify username: .l rating <username> <category>")
+                            send_msg($3, "specify username: .l rating <username> <category>")
                         }
                     break
                     case "alias":
@@ -63,7 +63,7 @@ BEGIN {
                     break
                 }
             } else {
-                send_msg($3, "Lichess command: .l <rating|tv> <username> <category>")
+                send_msg($3, "lichess command: .l <rating | tv | alias> <username> <category>")
             }
         break
         case ":.d":
@@ -73,11 +73,11 @@ BEGIN {
             if ($5) {
                 send_msg($3, search_wiki(collect(5)))
             } else {
-                send_msg($3, "Wikipedia command: .w <query>")
+                send_msg($3, "wikipedia command: .w <query>")
             }
         break
         default:
-            send_msg($3, "Invalid command!")
+            send_msg($3, "invalid command!")
         break
             
     }
