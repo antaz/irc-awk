@@ -29,17 +29,31 @@ BEGIN {
     sub(/\r/, "")
     switch($4) {
         case ":.l":
-            if ($5 == "rating") {
-                if ($6) {
-                    if ($7) {
-                        send_msg($3, get_lichess_rating($6, $7))
-                    }
+            if ($5) {
+                switch($5) {
+                    case "tv":
+                        if ($6) {
+                            send_msg($3, get_lichess_tv($6))
+                        } else {
+                            send_msg($3, "Specify username: .l tv <username>")
+                        }
+                    break
+                    case "rating":
+                        if ($6) {
+                            if ($7) {
+                                send_msg($3, get_lichess_rating($6, $7))
+                            } else {
+                                send_msg($3, "Specify category: .l rating <username> <category>")
+                            }
+                        } else {
+                            send_msg($3, "Specify username: .l rating <username> <category>")
+                        }
+                    break
+                    default:
+                    break
                 }
-            }
-            if ($5 == "tv") {
-                if ($6) {
-                    send_msg($3, get_lichess_tv($6))
-                }
+            } else {
+                send_msg($3, "Lichess command: .l <rating|tv> <username> <category>")
             }
         break
         case ":.d":
@@ -48,9 +62,12 @@ BEGIN {
         case ":.w":
             if ($5) {
                 send_msg($3, search_wiki(collect(5)))
+            } else {
+                send_msg($3, "Wikipedia command: .w <query>")
             }
         break
         default:
+            send_msg($3, "Invalid command!")
         break
             
     }
