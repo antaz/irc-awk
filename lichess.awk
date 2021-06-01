@@ -1,6 +1,11 @@
 # returns lichess rating of `username` in 'category'
 function get_lichess_rating(username, category) {
     if (category ~ /^(rapid)|(blitz)|(bullet)|(ultrabullet)|(puzzle)$/) {
+        # check if username is aliased
+        output = exec_cmd("jq -r '." username "' alias.json")
+        if (output != "null") {
+            username = output
+        }
 
         output = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -rc '[.perfs." category ".rating, .perfs." category ".games, .perfs." category ".rd, .perfs." category ".prog]'")
 
@@ -29,3 +34,13 @@ function get_lichess_tv(username) {
     }
 }
 
+# add lichess alias
+function add_lichess_alias(username, alias) {
+    command = "echo $(cat alias.json | jq '. + {" username ": \"" alias "\"}') > alias.json"
+    result = exec_cmd(command)
+    if (!result) {
+        return "alias " username " -> " "successfully added."
+    } else {
+        return "failed to add alias."
+    }
+}
