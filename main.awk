@@ -66,8 +66,12 @@ BEGIN {
                 send_msg($3, "lichess command: .l <rating | tv | alias> <username> <category>")
             }
         break
-        case ":.d":
-            # TODO implement dictionary capability
+        case ":.ud":
+            if ($5) {
+                send_msg($3, search_urbandict(collect(5)))
+            } else {
+                send_msg($3, "urban dictionary command: .ud <query>")
+            }
         break
         case ":.w":
             if ($5) {
