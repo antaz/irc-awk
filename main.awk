@@ -43,7 +43,7 @@ BEGIN {
                             if ($7) {
                                 send_msg($3, get_lichess_rating($6, $7))
                             } else {
-                                send_msg($3, "specify category: .l rating <username> <category>")
+                                send_msg($3, get_lichess_rating($6, "rapid"))
                             }
                         } else {
                             send_msg($3, "specify username: .l rating <username> <category>")
