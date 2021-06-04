@@ -39,7 +39,7 @@ function add_lichess_alias(username, alias) {
     command = "echo $(cat alias.json | jq '. + {" username ": \"" alias "\"}') > alias.json"
     result = exec_cmd(command)
     if (!result) {
-        return "alias " username " -> " "successfully added."
+        return "alias " username " -> " alias " successfully added."
     } else {
         return "failed to add alias."
     }
