@@ -68,7 +68,11 @@ BEGIN {
         break
         case ":.ud":
             if ($5) {
-                send_msg($3, search_urbandict(collect(5)))
+                if ($6) {
+                    send_msg($3, search_urbandict(collect(6), $5-1))
+                } else {
+                    send_msg($3, search_urbandict(collect(5), 0))
+                }
             } else {
                 send_msg($3, "urban dictionary command: .ud <query>")
             }
