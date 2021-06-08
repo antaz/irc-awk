@@ -74,7 +74,7 @@ BEGIN {
                     send_msg($3, search_urbandict(collect(5), 0))
                 }
             } else {
-                send_msg($3, "urban dictionary command: .ud <query>")
+                send_msg($3, "urban dictionary command: .ud [def_number] <query>")
             }
         break
         case ":.w":
@@ -83,13 +83,13 @@ BEGIN {
                     if ($6) {
                         send_msg($3, search_wiki(collect(6), $5))
                     } else {
-                        send_msg($3, "wikipedia command: .w <lang_code> <query>")
+                        send_msg($3, "wikipedia command: .w [lang_code] <query>")
                     }
                 } else {
                     send_msg($3, search_wiki(collect(5), "en"))
                 }
             } else {
-                send_msg($3, "wikipedia command: .w <lang_code> <query>")
+                send_msg($3, "wikipedia command: .w [lang_code] <query>")
             }
         break
         case ":.h":
