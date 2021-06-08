@@ -68,7 +68,7 @@ BEGIN {
         break
         case ":.ud":
             if ($5) {
-                if ($6) {
+                if ($6 && ($5 ~ /^[1-9]$/)) {
                     send_msg($3, search_urbandict(collect(6), $5-1))
                 } else {
                     send_msg($3, search_urbandict(collect(5), 0))
