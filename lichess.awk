@@ -16,10 +16,10 @@ function get_lichess_rating(username, category) {
             output = sprintf("%s %s (%s) [N = %s, σ = %s, Δ = %s]", username, category, a[1], a[2], a[3], a[4])
             return output
         } else {
-            return "User not found!"
+            return "user not found!"
         }
     } else {
-        return "Specify a valid category: (rapid, blitz, bullet, ultrabullet, puzzle)"
+        return "specify a valid category: (rapid, blitz, bullet, ultrabullet, puzzle)"
     }
 }
 
@@ -27,10 +27,10 @@ function get_lichess_rating(username, category) {
 function get_lichess_tv(username) {
     command = "curl -s 'https://lichess.org/api/user/" username "' | jq -r .url"
     result = exec_cmd(command)
-    if (result) {
+    if (result != "" && result != "null") {
         return result "/tv"
     } else {
-        return "Something went wrong! :("
+        return "username not found!"
     }
 }
 
