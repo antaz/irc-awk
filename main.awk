@@ -128,13 +128,19 @@ function collect(n) {
 
 # Executing a command and returing its getline output
 function exec_cmd(command) {
-    result = ""
-    command |& getline result
+    command |& getline line
+    result = line
+    while ((command |& getline line) > 0) {
+        result = result "\r\n" line
+    }
     close(command)
     return result
 }
 
 # sends a `message` to a specific `target` (channel or user)
 function send_msg(target, message) {
-    write("PRIVMSG " target " :" message)
+    split(message, lines, /(\r\n)|(\n)/)
+    for (i in lines) {
+        write("PRIVMSG " target " :" lines[i])
+    }
 }
