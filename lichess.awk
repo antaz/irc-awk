@@ -38,7 +38,7 @@ function get_lichess_tv(username) {
 function add_lichess_alias(username, alias) {
     command = "echo $(cat alias.json | jq '. + {" alias ": \"" username "\"}') > alias.json"
     result = exec_cmd(command)
-    if (result) {
+    if (!result) {
         return "alias " username " -> " alias " successfully added."
     } else {
         return "failed to add alias."
@@ -48,9 +48,11 @@ function add_lichess_alias(username, alias) {
 function delete_lichess_alias(alias) {
     command = "echo $(cat alias.json | jq 'del(." alias ")') > alias.json"
     result = exec_cmd(command)
-    if (result) {
+    if (!result) {
         return "alias " alias " deleted."
     } else {
         return "failed to delete alias."
     }
+    # TODO check if alias exists before deleting 
+    # this always succeed
 }
