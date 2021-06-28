@@ -54,16 +54,23 @@ BEGIN {
                             if ($7) {
                                 send_msg($3, add_lichess_alias($6, $7))
                             } else {
-                                send_msg($3, "add alias: .l alias <nick> <alias>")
+                                send_msg($3, "add alias: .l alias <lichess_username> <alias>")
                             }
                         } else {
-                                send_msg($3, "add alias: .l alias <nick> <alias>")
+                                # send_msg($3, "add alias: .l alias <nick> <alias>")
+                        }
+                    break
+                    case "del_alias":
+                        if ($6) {
+                            send_msg($3, delete_lichess_alias($6))
+                        } else {
+                            send_msg($3, "delete alias: .l del_alias <alias>")
                         }
                     default:
                     break
                 }
             } else {
-                send_msg($3, "lichess command: .l <rating | tv | alias> <username> <category>")
+                send_msg($3, "lichess command: .l <rating tv alias del_alias>")
             }
         break
         case ":.ud":
