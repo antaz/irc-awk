@@ -1,6 +1,6 @@
 # returns lichess rating of `username` in 'category'
 function get_lichess_rating(username, category) {
-    if (category ~ /^(rapid)|(blitz)|(bullet)|(ultrabullet)|(puzzle)$/) {
+    if (category ~ /^(rapid)|(blitz)|(bullet)|(ultrabullet)|(puzzle)|(correspondence)$/) {
         # check if username is aliased
         output = exec_cmd("jq -r '." username "' alias.json")
         if (output != "null") {
@@ -36,11 +36,21 @@ function get_lichess_tv(username) {
 
 # add lichess alias
 function add_lichess_alias(username, alias) {
-    command = "echo $(cat alias.json | jq '. + {" username ": \"" alias "\"}') > alias.json"
+    command = "echo $(cat alias.json | jq '. + {" alias ": \"" username "\"}') > alias.json"
     result = exec_cmd(command)
-    if (!result) {
+    if (result) {
         return "alias " username " -> " alias " successfully added."
     } else {
         return "failed to add alias."
+    }
+}
+
+function delete_lichess_alias(alias) {
+    command = "echo $(cat alias.json | jq 'del(." alias ")') > alias.json"
+    result = exec_cmd(command)
+    if (result) {
+        return "alias " alias " deleted."
+    } else {
+        return "failed to delete alias."
     }
 }
