@@ -57,7 +57,7 @@ BEGIN {
                                 send_msg($3, "add alias: .l alias <lichess_username> <alias>")
                             }
                         } else {
-                                # send_msg($3, "add alias: .l alias <nick> <alias>")
+                                send_msg($3, "add alias: .l alias <lichess_username> <alias>")
                         }
                     break
                     case "del_alias":
