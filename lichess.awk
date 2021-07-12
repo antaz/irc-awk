@@ -1,6 +1,6 @@
 # returns lichess rating of `username` in 'category'
 function get_lichess_rating(username, category) {
-    if (category ~ /^(rapid)|(blitz)|(bullet)|(ultrabullet)|(puzzle)|(correspondence)$/) {
+    if (category ~ /^(classical)|(rapid)|(blitz)|(bullet)|(ultrabullet)|(puzzle)|(correspondence)$/) {
         # check if username is aliased
         output = exec_cmd("jq -r '." username "' alias.json")
         if (output != "null") {
