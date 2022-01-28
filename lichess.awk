@@ -37,7 +37,6 @@ function get_lichess_tv(username) {
     }
 
     command = "curl -s 'https://lichess.org/api/user/" username "' | jq -r .url"
-    printf command
     result = exec_cmd(command)
     if (result != "" && result != "null") {
         return result "/tv"
