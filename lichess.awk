@@ -1,11 +1,12 @@
 # returns lichess rating of `username` in 'category'
 function get_lichess_rating(username, category) {
-    username = sanitize_url(username)
     if (category ~ /^(classical)|(rapid)|(blitz)|(bullet)|(ultrabullet)|(puzzle)|(correspondence)$/) {
         # check if username is aliased
-        output = exec_cmd("jq -r '." username "' alias.json")
+        output = exec_cmd("jq -r '." "[\"" username "\"]" "' alias.json")
         if (output != "null") {
             username = output
+        } else {
+            username = sanitize_url(username)
         }
 
         output = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -rc '[.perfs." category ".rating, .perfs." category ".games, .perfs." category ".rd, .perfs." category ".prog]'")
@@ -26,8 +27,17 @@ function get_lichess_rating(username, category) {
 
 # returns tv url of 'username'
 function get_lichess_tv(username) {
-    username = sanitize_url(username)
+
+    # check if username is aliased
+    output = exec_cmd("jq -r '." "[\"" username "\"]" "' alias.json")
+    if (output != "null") {
+        username = output
+    } else {
+        username = sanitize_url(username)
+    }
+
     command = "curl -s 'https://lichess.org/api/user/" username "' | jq -r .url"
+    printf command
     result = exec_cmd(command)
     if (result != "" && result != "null") {
         return result "/tv"
