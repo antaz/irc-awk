@@ -47,7 +47,7 @@ function get_lichess_tv(username) {
 
 # add lichess alias
 function add_lichess_alias(username, alias) {
-    command = "echo $(cat alias.json | jq '. + {" alias ": \"" username "\"}') > alias.json"
+    command = "echo $(cat alias.json | jq '. + {\"" alias "\": \"" username "\"}') > alias.json"
     result = exec_cmd(command)
     if (!result) {
         return "alias " username " -> " alias " successfully added."
