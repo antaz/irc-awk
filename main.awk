@@ -151,3 +151,10 @@ function send_msg(target, message) {
         write("PRIVMSG " target " :" lines[i])
     }
 }
+
+function sanitize_url(str) {
+    gsub(/ /, "%20", str) # replace space with %20
+    gsub(/'/, "%27", str) # replace single quote with %27
+    gsub(/`/, "%60", str) # replace backtick with %60
+    return str
+}
