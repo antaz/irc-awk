@@ -1,9 +1,7 @@
-function search_urbandict(query, n) {
+function search_urbandict(query, n,    result) {
     # url encoding similar to the wiki search function
-    gsub(/ /, "%20", query)
-    gsub(/'/, "%27", query)
-    cmd = "curl -s 'https://api.urbandictionary.com/v0/define?term=" query "' | jq -r '.list[" n "].definition'"
-    result = exec_cmd(cmd)
+    query = sanitize_url(query)
+    result = exec_cmd("curl -s 'https://api.urbandictionary.com/v0/define?term=" query "' | jq -r '.list[" n "].definition'")
     if (result != "null" && result != "") {
         return result
     } else {

@@ -1,22 +1,22 @@
 # returns lichess rating of `username` in 'category'
-function get_lichess_rating(username, category) {
+function get_lichess_rating(username, category,    result) {
     if (category ~ /^(classical)|(rapid)|(blitz)|(bullet)|(ultrabullet)|(puzzle)|(correspondence)$/) {
         # check if username is aliased
-        output = exec_cmd("jq -r '." "[\"" username "\"]" "' alias.json")
-        if (output != "null") {
-            username = output
+        result = exec_cmd("jq -r '." "[\"" username "\"]" "' alias.json")
+        if (result != "null") {
+            username = result
         } else {
             username = sanitize_url(username)
         }
 
-        output = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -rc '[.perfs." category ".rating, .perfs." category ".games, .perfs." category ".rd, .perfs." category ".prog]'")
+        result = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -rc '[.perfs." category ".rating, .perfs." category ".games, .perfs." category ".rd, .perfs." category ".prog]'")
 
-        if (output) {
-            gsub(/[\[\]]/, "", output)
-            split(output, a, ",")
+        if (result) {
+            gsub(/[\[\]]/, "", result)
+            split(result, a, ",")
 
-            output = sprintf("%s %s (%s) [N = %s, σ = %s, Δ = %s]", username, category, a[1], a[2], a[3], a[4])
-            return output
+            result = sprintf("%s %s (%s) [N = %s, σ = %s, Δ = %s]", username, category, a[1], a[2], a[3], a[4])
+            return result
         } else {
             return "user not found!"
         }
@@ -26,18 +26,16 @@ function get_lichess_rating(username, category) {
 }
 
 # returns tv url of 'username'
-function get_lichess_tv(username) {
-
+function get_lichess_tv(username,    result) {
     # check if username is aliased
-    output = exec_cmd("jq -r '." "[\"" username "\"]" "' alias.json")
-    if (output != "null") {
-        username = output
+    result = exec_cmd("jq -r '." "[\"" username "\"]" "' alias.json")
+    if (result != "null") {
+        username = result
     } else {
         username = sanitize_url(username)
     }
 
-    command = "curl -s 'https://lichess.org/api/user/" username "' | jq -r .url"
-    result = exec_cmd(command)
+    result = exec_cmd("curl -s 'https://lichess.org/api/user/" username "' | jq -r .url")
     if (result != "" && result != "null") {
         return result "/tv"
     } else {
@@ -46,19 +44,17 @@ function get_lichess_tv(username) {
 }
 
 # add lichess alias
-function add_lichess_alias(username, alias) {
-    command = "echo $(cat alias.json | jq '. + {\"" alias "\": \"" username "\"}') > alias.json"
-    result = exec_cmd(command)
-    if (!result) {
+function add_lichess_alias(username, alias,    result) {
+    result = exec_cmd("echo $(cat alias.json | jq '. + {\"" alias "\": \"" username "\"}') > alias.json")
+    if (!result || (result == "null")) {
         return "alias " username " -> " alias " successfully added."
     } else {
         return "failed to add alias."
     }
 }
 
-function delete_lichess_alias(alias) {
-    command = "echo $(cat alias.json | jq 'del(." alias ")') > alias.json"
-    result = exec_cmd(command)
+function delete_lichess_alias(alias,    result) {
+    result = exec_cmd("echo $(cat alias.json | jq 'del(." alias ")') > alias.json")
     if (!result) {
         return "alias " alias " deleted."
     } else {
