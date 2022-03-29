@@ -15,8 +15,8 @@ function get_lichess_rating(username, category,    result) {
             gsub(/[\[\]]/, "", result)
             split(result, a, ",")
 
-            result = sprintf("%s %s (%s) [N = %s, σ = %s, Δ = %s]", username, category, a[1], a[2], a[3], a[4])
-            return result
+            formatted_result = sprintf("%s %s (%s) [N = %s, σ = %s, Δ = %s]", username, category, a[1], a[2], a[3], a[4])
+            return formatted_result
         } else {
             return "user not found!"
         }
